@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { GatewayIntentBits, Partials } from 'discord.js';
 import { Arcybot, log } from 'arcybot';
 
-import { Cache, Database } from 'utils';
+import { Cache, Database, getOption } from 'utils';
 import { commandsFunctions, customCommands } from 'commands';
 
 dotenv.config();
@@ -28,6 +28,8 @@ const init = async () => {
 	const config = {
 		discordToken: process.env.DISCORD_TOKEN,
 		botId: process.env.BOT_ID,
+		modRole: getOption('modRole') as string,
+		guildId: getOption('guildId') as string,
 		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages],
 		partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 	};

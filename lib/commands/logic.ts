@@ -1,5 +1,5 @@
 import { CommandFn } from 'arcybot';
 
-import { talk } from './talk/logic';
+import { test } from './test/logic';
 
-export const commandsFunctions: CommandFn[] = [talk];
+export const commandsFunctions: CommandFn[] = [test];
