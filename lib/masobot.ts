@@ -1,21 +1,55 @@
 import * as dotenv from 'dotenv';
+import { GatewayIntentBits, Partials } from 'discord.js';
+import { Arcybot, log } from 'arcybot';
 
-import { Arcybot } from 'arcybot';
-
-import { mock as commandsObject } from './commands/mock';
-import { foo } from './commands/commands';
+import { Cache, Database } from 'utils';
+import { commandsFunctions, customCommands } from 'commands';
 
 dotenv.config();
 
-const commandsFunctions = [foo];
+/************************
+ *        CONFIG        *
+ ************************/
 
-const bot = new Arcybot(
-	{
+const botDb = 'masobot';
+export const mongo = new Database([{ symbol: botDb, url: process.env['DB'] }]);
+export const cache = new Cache({ botDb });
+
+/************************
+ *      BOT CONFIG      *
+ ************************/
+
+export let bot: Arcybot;
+
+const init = async () => {
+	await mongo.init();
+	await cache.update();
+
+	const config = {
 		discordToken: process.env.DISCORD_TOKEN,
 		botId: process.env.BOT_ID,
-	},
-	commandsObject,
-	commandsFunctions,
-);
+		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages],
+		partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+	};
 
-bot.start('Bot started!');
+	bot = new Arcybot(
+		config,
+		cache.commandList,
+		commandsFunctions,
+		customCommands,
+	);
+
+	bot.start('Most Masochistic Bot is working.');
+
+	bot.botClient
+		.on('error', async error => {
+			log.DEBUG('Discord bot error detected');
+			console.log(error);
+		})
+		.on('warn', async (message: string) => {
+			log.DEBUG('Discord bot warning detected');
+			console.log(message);
+		});
+};
+
+init();

@@ -16,7 +16,7 @@
   "main": "dist/masobot.js",
   "scripts": {
     "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
-    "dev": "nodemon --exec npx tsx __example/index.ts",
+    "dev": "nodemon --exec npx tsx lib/masobot.ts",
     "lint": "eslint . --ext .ts",
     "test": "echo TODO"
   },

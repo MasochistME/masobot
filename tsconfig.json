@@ -27,5 +27,5 @@
     "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
   },
   "include": ["lib/**/*"],
-  "exclude": ["node_modules", "__assets", "__docs", "__example"],
+  "exclude": ["node_modules"],
 }
