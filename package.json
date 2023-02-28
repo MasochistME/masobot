@@ -1,0 +1,42 @@
+{
+  "name": "masobot",
+  "version": "1.0.0",
+  "description": "The Masochistic Bot.",
+  "repository": "https://github.com/MasochistME/masobot.git",
+  "author": "Arcyvilk <arcyvilk@gmail.com>",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "engines": {
+    "node": ">=16"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "main": "dist/masobot.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "dev": "nodemon --exec npx tsx __example/index.ts",
+    "lint": "eslint . --ext .ts",
+    "test": "echo TODO"
+  },
+  "dependencies": {
+    "arcybot": "^1.4.7",
+    "discord.js": "^14.7.1",
+    "mongodb": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/mongodb": "^4.0.7",
+    "@types/node": "^18.7.15",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1",
+    "tsc-alias": "^1.7.0",
+    "typescript": "^4.8.2"
+  }
+}
