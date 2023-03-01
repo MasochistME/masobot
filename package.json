@@ -6,7 +6,7 @@
   "author": "Arcyvilk <arcyvilk@gmail.com>",
   "license": "MIT",
   "sideEffects": false,
-  "type": "module",
+  "type": "commonjs",
   "engines": {
     "node": ">=16"
   },
@@ -23,6 +23,7 @@
   "dependencies": {
     "arcybot": "^1.4.7",
     "discord.js": "^14.7.1",
+    "markov-strings": "^3.0.1",
     "mongodb": "^5.1.0"
   },
   "devDependencies": {

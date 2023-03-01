@@ -7,7 +7,7 @@ import { mongo, cache } from 'masobot';
  * @param interaction DiscordInteraction
  * @return void
  */
-export const test = async (interaction: DiscordInteraction): Promise<void> => {
+export const fetch = async (interaction: DiscordInteraction): Promise<void> => {
 	const { channel } = interaction;
 	if (interaction.member?.user.id !== '165962236009906176') {
 		interaction.reply('Only Arcy can do this.');

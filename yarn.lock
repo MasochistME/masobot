@@ -1638,7 +1638,7 @@ lodash.snakecase@^4.1.1:
   resolved "https://registry.yarnpkg.com/lodash.snakecase/-/lodash.snakecase-4.1.1.tgz#39d714a35357147837aefd64b5dcbb16becd8f8d"
   integrity sha512-QZ1d4xoBHYUeuouhEq3lk3Uq7ldgyFXGBhg04+oRLnIz8o9T65Eh+8YdroUwn846zchkA9yDsDl5CVVaV2nqYw==
 
-lodash@^4.17.21:
+lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -1649,6 +1649,13 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+markov-strings@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/markov-strings/-/markov-strings-3.0.1.tgz#8d920114b40cbdc5e44b99e4f9ff467d8f8ca90b"
+  integrity sha512-/Cf6m7iIK1JWtvOemZ9eRUpKvebm+m6uXMTzszOJrRO3rkmdCqoS/EO9d4/3aFPnYEIHkopcF4C7W+k1zTDjnw==
+  dependencies:
+    lodash "^4.17.20"
 
 memory-pager@^1.0.2:
   version "1.5.0"
