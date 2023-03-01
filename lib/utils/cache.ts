@@ -54,14 +54,18 @@ export class Cache {
 
 		await Promise.all(promises);
 
-		log.INFO(`Dataset size: ${quotes.length}`);
-
+		log.INFO(`Raw dataset size: ${quotes.length}`);
+		log.INFO(`Preprocessing...`);
+		const quotesPreprocessed = preprocessing(quotes);
+		log.INFO(`Preprocessed dataset size: ${quotesPreprocessed.length}`);
 		log.INFO('Building Markov corpus...');
-		const markov = new Markov({ stateSize: 2 });
-		markov.addData(quotes);
+		const markov = new Markov({ stateSize: 3 });
+		markov.addData(quotesPreprocessed);
 
 		const corpus = markov.export();
-		fs.writeFile(`../corpus.json`, JSON.stringify(corpus), err => {
+		log.INFO('Stringifying the corpus...');
+		const out = `[${corpus.map((el: any) => JSON.stringify(el)).join(',')}]`;
+		fs.writeFile(`../corpus.json`, out, err => {
 			if (err) console.log(err);
 			else log.INFO('Corpus saved.');
 		});
@@ -76,3 +80,10 @@ export class Cache {
 		this.markov = await this.createMarkovCorpus();
 	}
 }
+
+const preprocessing = (arr: string[]) => {
+	const preprocessed = arr
+		.map(text => text.replace(/(?=http)(.*?)( |$)/g, '').trim())
+		.filter(text => text?.length);
+	return preprocessed;
+};
