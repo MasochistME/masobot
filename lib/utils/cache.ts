@@ -32,13 +32,13 @@ export class Cache {
 
 	private async createMarkovCorpus() {
 		const colNames = [
-			// 'dont_funny',
-			// 'general',
+			'dont_funny',
+			'general',
 			'other_stuff',
 			'race_general',
-			// 'rage-room',
-			// 'shy_guys',
-			// 'theme-rooms',
+			'rage-room',
+			'shy_guys',
+			'theme-rooms',
 		];
 		log.INFO('Fetching quotes dataset...');
 
