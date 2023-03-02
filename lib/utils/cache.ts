@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { CommandObject, log } from 'arcybot';
 import fs from 'fs';
+import bigjson from 'big-json';
 
 import { mongo } from 'masobot';
 import { getCommandsFromAPI, getAllOptionsFromAPI } from 'api';
@@ -31,46 +32,64 @@ export class Cache {
 
 	private async createMarkovCorpus() {
 		const colNames = [
-			'dont_funny',
-			'general',
+			// 'dont_funny',
+			// 'general',
 			'other_stuff',
 			'race_general',
-			'rage-room',
-			'shy_guys',
-			'theme-rooms',
+			// 'rage-room',
+			// 'shy_guys',
+			// 'theme-rooms',
 		];
 		log.INFO('Fetching quotes dataset...');
 
-		const quotes: string[] = [];
-
-		const promises = colNames.map(async (colName, index) => {
+		// Fetch all the quotes from all DBs.
+		const datasetPromises = colNames.map(async (colName, index) => {
 			log.INFO(`-> dataset ${colName} (${index + 1}/${colNames.length})`);
 			const collection = mongo.dbs[this.botDb].collection(colName);
 			const cursor = collection.find();
-			return await cursor.forEach(el => {
+			const quotes: string[] = [];
+
+			await cursor.forEach(el => {
 				quotes.push(el.content);
 			});
+
+			return quotes;
 		});
+		const datasets = await Promise.all(datasetPromises);
 
-		await Promise.all(promises);
-
-		log.INFO(`Raw dataset size: ${quotes.length}`);
-		log.INFO(`Preprocessing...`);
-		const quotesPreprocessed = preprocessing(quotes);
-		log.INFO(`Preprocessed dataset size: ${quotesPreprocessed.length}`);
-		log.INFO('Building Markov corpus...');
 		const markov = new Markov({ stateSize: 3 });
-		markov.addData(quotesPreprocessed);
 
-		const corpus = markov.export();
-		log.INFO('Stringifying the corpus...');
-		const out = `[${corpus.map((el: any) => JSON.stringify(el)).join(',')}]`;
-		fs.writeFile(`../corpus.json`, out, err => {
-			if (err) console.log(err);
-			else log.INFO('Corpus saved.');
+		log.INFO('Preprocessing datasets...');
+		datasets.forEach((dataset, index) => {
+			log.INFO(`-> dataset (${index + 1}/${colNames.length})`);
+			const quotesPreprocessed = preprocessing(dataset);
+			log.INFO(`---> final dataset size: ${quotesPreprocessed.length}`);
+			log.INFO('---> adding to corpus...');
+
+			markov.addData(quotesPreprocessed);
 		});
-		log.INFO('Done!');
 
+		log.INFO('Stringifying the corpus...');
+		const corpus = markov.export();
+
+		const writeStream = fs.createWriteStream('../corpus.json');
+		const stringifyStream = bigjson.createStringifyStream({
+			body: corpus,
+		});
+
+		stringifyStream.on('data', (strChunk: string) => {
+			writeStream.write(strChunk, 'utf-8');
+		});
+
+		stringifyStream.on('finish', () => {
+			log.INFO('Done!');
+		});
+
+		writeStream.on('finish', () => {
+			log.INFO('Corpus saved.');
+		});
+
+		log.INFO('Done...?');
 		return markov;
 	}
 
@@ -83,7 +102,19 @@ export class Cache {
 
 const preprocessing = (arr: string[]) => {
 	const preprocessed = arr
-		.map(text => text.replace(/(?=http)(.*?)( |$)/g, '').trim())
-		.filter(text => text?.length);
+		.map(
+			(text: string) =>
+				text
+					.toLowerCase() // everything to lowercase
+					.replace(/\n/g, '') // remove newlines
+					.replace(/(?=http)(.*?)( |$)/g, '') // remove all links
+					.replace(/(?=<:)(.*?)(>|$)/g, '') // remove all emojis
+					.trim() // remove leftover whitespaces
+					.replace(/\. |\?|!|“|”|"|,/g, '#') // replace all endline symbols with # so it's easier
+					.split('#'), // split sentences by endline character
+		)
+		.flat() // flatten sentences if they were split by endline character
+		.map(text => text.replace('#', '').trim()) // remove endline character replacement
+		.filter(text => text?.length); // remove quotes with length 0
 	return preprocessed;
 };
