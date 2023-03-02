@@ -1,6 +1,7 @@
 import { DiscordInteraction, log } from 'arcybot';
 import fs from 'fs';
-import bigjson from 'big-json';
+// import bigjson from 'big-json';
+import { default as JSONStream } from 'JSONStream';
 
 import { cache, mongo } from 'masobot';
 
@@ -70,9 +71,7 @@ const createMarkovCorpus = async () => {
 	log.INFO('Stringifying the corpus...');
 	const corpus = cache.markov.export();
 
-	const stringifyStream = bigjson.createStringifyStream({
-		body: corpus,
-	});
+	const stringifyStream = JSONStream.stringifyStream(corpus);
 	const writeStream = fs.createWriteStream('../corpus.json');
 
 	stringifyStream.on('data', (strChunk: string) => {

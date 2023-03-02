@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/annagadacz/.asdf/installs/nodejs/16.15.0/bin/node /Users/annagadacz/.asdf/installs/yarn/1.22.19/bin/yarn.js add --dev @types/big-json
+  /Users/annagadacz/.asdf/installs/nodejs/16.15.0/bin/node /Users/annagadacz/.asdf/installs/yarn/1.22.19/bin/yarn.js add @types/JSONStream --dev
 
 PATH: 
   /Users/annagadacz/.asdf/plugins/nodejs/shims:/Users/annagadacz/.asdf/installs/nodejs/16.15.0/bin:/Users/annagadacz/.asdf/installs/yarn/1.22.19/bin:/Users/annagadacz/.asdf/shims:/opt/homebrew/opt/asdf/libexec/bin:/usr/local/opt/redis@7.0/bin:/usr/local/opt/postgresql@9.6/bin:/Users/annagadacz/.nvm/versions/node/v17.9.1/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/opt/redis@7.0/bin:/usr/local/opt/postgresql@9.6/bin:/Users/annagadacz/.nvm/versions/node/v17.9.1/bin:/opt/homebrew/bin:/opt/homebrew/sbin
@@ -14,7 +14,7 @@ Platform:
   darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fbig-json: Not found
+  Error: https://registry.yarnpkg.com/@types%2fJSONStream: Not found
       at Request.params.callback [as _callback] (/Users/annagadacz/.asdf/installs/yarn/1.22.19/lib/cli.js:66145:18)
       at Request.self.callback (/Users/annagadacz/.asdf/installs/yarn/1.22.19/lib/cli.js:140890:22)
       at Request.emit (node:events:527:28)
@@ -50,6 +50,7 @@ npm manifest:
       "test": "echo TODO"
     },
     "dependencies": {
+      "JSONStream": "^1.3.5",
       "arcybot": "^1.4.7",
       "big-json": "^3.2.0",
       "discord.js": "^14.7.1",
@@ -1052,7 +1053,7 @@ Lockfile:
       "@typescript-eslint/types" "5.36.2"
       eslint-visitor-keys "^3.3.0"
   
-  JSONStream@^1.3.1:
+  JSONStream@^1.3.1, JSONStream@^1.3.5:
     version "1.3.5"
     resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"
     integrity sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==
