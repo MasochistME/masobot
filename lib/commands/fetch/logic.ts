@@ -3,7 +3,7 @@ import { DiscordInteraction, log } from 'arcybot';
 import { mongo, cache } from 'masobot';
 
 /**
- * Sends a meme to the channel.
+ * Fetches all messages from the channel where this command was invoked.
  * @param interaction DiscordInteraction
  * @return void
  */
