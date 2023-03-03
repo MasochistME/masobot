@@ -1,7 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { CommandObject, log } from 'arcybot';
-import fs from 'fs';
-import bigjson from 'big-json';
+import { CommandObject } from 'arcybot';
 
 import { getCommandsFromAPI, getAllOptionsFromAPI } from 'api';
 
@@ -41,48 +39,22 @@ export class Cache {
 	}
 }
 
-const importCorpus = async () => {
-	return new Promise((resolve, reject) => {
-		const filePath = '../corpus.json';
-
-		const chunks: string[] = [];
-		const readStream = fs.createReadStream(filePath);
-
-		readStream.on('data', (chunk: any) => {
-			chunks.push(chunk.toString());
-		});
-
-		readStream.on('end', async () => {
-			const body = chunks.join('');
-			console.log(body.substring(body.length - 100));
-			const parsed = await bigjson.parse({ body });
-			resolve(parsed);
-		});
-
-		readStream.on('error', err => {
-			console.log(err);
-		});
-
-		// const parseStream = bigjson.createParseStream();
-		// const readStream = fs.createReadStream(filePath);
-		// readStream.pipe(parseStream);
-
-		// parseStream.on('data', (pojo: any) => {
-		// 	console.log(pojo);
-		// 	resolve(pojo);
-		// });
-		// parseStream.on('error', reject);
-
-		// readStream.on('end', () => {
-		// 	console.log('finished');
-		// });
-
-		// log.INFO('Reading file...');
-		// fs.readFile(filePath, { encoding: 'utf8' }, async (err, data) => {
-		// 	log.INFO('Parsing file...');
-		// 	const parsedStuff = await bigjson.parse({ body: data });
-		// 	log.INFO('Exporting corpus...');
-		// 	resolve(parsedStuff);
-		// });
-	});
-};
+// const importCorpus = async () => {
+// return new Promise((resolve, reject) => {
+// 	const filePath = '../corpus.json';
+// 	const chunks: string[] = [];
+// 	const readStream = fs.createReadStream(filePath);
+// 	readStream.on('data', (chunk: any) => {
+// 		chunks.push(chunk.toString());
+// 	});
+// 	readStream.on('end', async () => {
+// 		const body = chunks.join('');
+// 		console.log(body.substring(body.length - 100));
+// 		const parsed = await bigjson.parse({ body });
+// 		resolve(parsed);
+// 	});
+// 	readStream.on('error', err => {
+// 		console.log(err);
+// 	});
+// });
+// };
