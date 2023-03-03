@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
-import { CommandObject } from 'arcybot';
+import { CommandObject, log } from 'arcybot';
+import fs from 'fs';
 
 import { getCommandsFromAPI, getAllOptionsFromAPI } from 'api';
 
@@ -31,30 +32,28 @@ export class Cache {
 		this.markov = new Markov({ stateSize: 3 });
 		this.commandList = await getCommandsFromAPI();
 		this.options = await getAllOptionsFromAPI();
-		// log.INFO('Importing corpus...');
-		// const corpus = await importCorpus();
-		// console.log(corpus);
-		// log.INFO('Corpus recreated!');
-		// this.markov.import(corpus);
+		log.INFO('Importing corpus...');
+		const corpus = await importCorpus();
+		log.INFO('Corpus recreated!');
+		this.markov.import(corpus);
 	}
 }
 
-// const importCorpus = async () => {
-// return new Promise((resolve, reject) => {
-// 	const filePath = '../corpus.json';
-// 	const chunks: string[] = [];
-// 	const readStream = fs.createReadStream(filePath);
-// 	readStream.on('data', (chunk: any) => {
-// 		chunks.push(chunk.toString());
-// 	});
-// 	readStream.on('end', async () => {
-// 		const body = chunks.join('');
-// 		console.log(body.substring(body.length - 100));
-// 		const parsed = await bigjson.parse({ body });
-// 		resolve(parsed);
-// 	});
-// 	readStream.on('error', err => {
-// 		console.log(err);
-// 	});
-// });
-// };
+const importCorpus = async () => {
+	return new Promise((resolve, reject) => {
+		const filePath = '../corpus.json';
+		const chunks: string[] = [];
+		const readStream = fs.createReadStream(filePath);
+		readStream.on('data', (chunk: any) => {
+			chunks.push(chunk.toString());
+		});
+		readStream.on('end', async () => {
+			const body = chunks.join('');
+			const parsed = await JSON.parse(body);
+			resolve(parsed);
+		});
+		readStream.on('error', err => {
+			console.log(err);
+		});
+	});
+};

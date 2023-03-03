@@ -7,8 +7,9 @@ import { cache } from 'masobot';
  * @return void
  */
 export const speak = async (interaction: DiscordInteraction): Promise<void> => {
+	await interaction.deferReply();
 	if (interaction.member?.user.id !== '165962236009906176') {
-		interaction.reply('Only Arcy can do this.');
+		interaction.editReply('Only Arcy can do this.');
 		return;
 	}
 
@@ -19,7 +20,7 @@ export const speak = async (interaction: DiscordInteraction): Promise<void> => {
 		// You'll often need to manually filter raw results to get something that fits your needs.
 		filter: (result: any) => {
 			const length = result.string.split(' ').length;
-			return length < 10 && length > 4;
+			return length > 10;
 		},
 	};
 
@@ -30,13 +31,15 @@ export const speak = async (interaction: DiscordInteraction): Promise<void> => {
 			const text = `${result.string
 				.substring(0, 1)
 				.toUpperCase()}${result.string.substring(1)}.`;
-			interaction.reply(text);
+			interaction.editReply(text);
 			return;
 		}
-		interaction.reply(
+		interaction.editReply(
 			'The test has failed - could not generate Markov corpus.',
 		);
 	} catch (err) {
-		interaction.reply('The test has failed - could not generate a sentence.');
+		interaction.editReply(
+			'The test has failed - could not generate a sentence.',
+		);
 	}
 };
