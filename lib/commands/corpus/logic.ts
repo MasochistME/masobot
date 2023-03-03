@@ -13,19 +13,22 @@ import { collections } from './utils';
 export const corpus = async (
 	interaction: DiscordInteraction,
 ): Promise<void> => {
+	await interaction.deferReply();
 	if (interaction.member?.user.id !== '165962236009906176') {
-		interaction.reply('Only Arcy can do this.');
+		interaction.editReply('Only Arcy can do this.');
 		return;
 	}
 
 	// Disabling function to not overwrite stuff by mistake
 	const isDisabled = false;
 	if (isDisabled) {
-		interaction.reply('Believe me, you DONT want to do this.');
+		interaction.editReply('Believe me, you DONT want to do this.');
 		return;
 	}
 
-	interaction.reply('Corpus creation initiated. This will take about 5 hours.');
+	interaction.editReply(
+		'Corpus creation initiated. This will take about 5 hours.',
+	);
 	await createMarkovCorpus();
 };
 

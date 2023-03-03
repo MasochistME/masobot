@@ -29,9 +29,12 @@ export class Cache {
 	}
 
 	async update() {
-		this.markov = new Markov({ stateSize: 3 });
+		this.markov = new Markov({ stateSize: 2 });
 		this.commandList = await getCommandsFromAPI();
 		this.options = await getAllOptionsFromAPI();
+
+		const shouldImport = false;
+		if (!shouldImport) return;
 		log.INFO('Importing corpus...');
 		const corpus = await importCorpus();
 		log.INFO('Corpus recreated!');
